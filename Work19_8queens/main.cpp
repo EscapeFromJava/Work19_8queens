@@ -1,54 +1,52 @@
 ﻿#include <iostream>
-#include <string>
 
 using namespace std;
 
-string coordsToString(int x);
 const int SIZE = 8;
-bool checkByQueen(int x, int y, int Qx, int Qy);
+
+void traektoriyQeen(int Q[SIZE][SIZE], int a, int b)
+{
+	for (int i = 0; i < SIZE; i++)
+		for (int j = 0; j < SIZE; j++)
+			if (abs(i - a) == abs(j - b) || i == a || j == b)
+				Q[i][j]++;
+}
+
+void traektoriyQeen2(int Q[SIZE][SIZE], int i, int j)
+{
+	for (int k = 0; k < SIZE; k++) {
+		for (int n = 0; n < SIZE; n++)
+			if (abs(k - i) == abs(n - j) || k == i || n == j)
+				Q[k][n]++;
+	}
+}
+
+void printMatr(int Q[SIZE][SIZE])
+{
+	for (int i = 0; i < SIZE; i++) {
+		for (int j = 0; j < SIZE; j++)
+			cout << Q[i][j] << " ";
+		cout << endl;
+	}
+
+}
 
 int main()
 {
-    setlocale(LC_ALL, "rus");
-   
-    int row[SIZE] = { 0 }; //ряды
-    int col[SIZE] = { 0 }; //столбцы
-    int vol = 0;
-        for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                   
-                    int count = 0;
-                    for (int k = 0; k < SIZE; k++) {
-                       
-                        if ((checkByQueen(row[k], col[k], i, j)) == false) {
-                            count++;
-                            if (count == SIZE) {
-                                row[i] = i;
-                                col[i] = j;
-                                vol++;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+	int Q[SIZE][SIZE] = { 0 };
 
-    for (int i = 0; i <= vol; i++) {
-        cout << coordsToString(row[i]) <<col[i]+1<< endl;
-    }
-    return 0;
-}
+	int a, b;
+	cin >> a >> b;
 
-string coordsToString(int x)
-{
-    char c = 'A' + x;
-    string s = "";
-    s += c;
-    return s;
-}
+	traektoriyQeen(Q, a, b);
 
-bool checkByQueen(int x, int y, int Qx, int Qy)
-{
-    return (x == Qx || y == Qy || abs(Qy - y) == abs(Qx - x));
+	for (int i = 0; i < SIZE; i++) {
+		for (int j = 0; j < SIZE; j++) {
+			if (Q[i][j] == 0)
+				traektoriyQeen2(Q, i, j);
+		}
+	}
+	printMatr(Q);
+	return 0;
 }
 
